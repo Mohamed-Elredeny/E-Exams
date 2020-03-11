@@ -1,0 +1,49 @@
+.main-admin-div-left{
+    position: relative;
+    width: 20%;
+    height: 500px;
+    border:2px solid black;
+    top: 90px;
+    left: 5%;
+    overflow: scroll;
+
+}
+.main-admin-div-left .deps{
+    font-size: 25px;
+    border:2px solid black;
+    padding: 20px;
+    width: 80%;
+    position: relative;
+    left: 10%;
+    top:5%;
+    text-align: center;
+    margin-bottom: 10px;
+    scroll-behavior: auto;
+}
+.main-admin-div-right{
+    position: absolute;
+    width: 70%;
+    height: 500px;
+    border:2px solid black;
+    top: 90px;
+    left: 28%;
+    overflow: scroll;
+}
+.main-admin-div-right .cats{
+
+    font-size: 25px;
+    border:2px solid black;
+    padding: 20px;
+    width: 25%;
+    height: 25%;
+    position: relative;
+    left: 11%;
+    top:7%;
+    text-align: center;
+    margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 10px;
+        padding-top: 30px;
+
+
+}
