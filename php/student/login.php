@@ -17,7 +17,7 @@
 				//echo "Query Done";
 			}
 			$student = mysqli_fetch_all($result,MYSQLI_ASSOC);
-			session_start();
+		
 
 			
 		
@@ -35,7 +35,5 @@
 		
 		
 		}
-
-
 	}
 ?>

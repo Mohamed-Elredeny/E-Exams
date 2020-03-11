@@ -17,7 +17,7 @@ if(isset($_POST['send'])){
 		$question_difficulty =$_POST['diffculty'];
 
 	}
-	$view_questions_for_studing=mysqli_query($con,"SELECT * FROM question_content WHERE question_type='".$question_type."' and question_difficulty='".$question_difficulty."' and chapter_id='".$chapter."' and subject_id='".$subject."' ");
+	$view_questions_for_studing=mysqli_query($con,"SELECT * FROM question_content WHERE question_type='".$question_type."' and question_difficulty='".$question_difficulty."' and chapter_id='".$chapter."' and subject_id='".$subject."' ORDER BY RAND() ");
 	if($view_questions_for_studing){
 		$view_questions_for_studing_res = mysqli_fetch_all($view_questions_for_studing,MYSQLI_ASSOC);
 		if(!count($view_questions_for_studing_res) > 0){

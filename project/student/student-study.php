@@ -2,6 +2,9 @@
 <?php include('C:\xampp1\htdocs\E Exams Project\php\student\student-main-page.php'); ?>
 <link rel="stylesheet" type="text/css" href="http://localhost/E%20Exams%20Project/style/css/student/student-main-page.css">
 <!-- Start of the page -->
+
+
+
 <?php foreach($studentData as $stddata){ ?>
 <div class="student-content" style="margin-bottom: 300px">
 
@@ -163,4 +166,3 @@
 	});
 
 </script>
-

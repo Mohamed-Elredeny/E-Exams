@@ -3,15 +3,16 @@ session_start();
 $con = mysqli_connect('localhost','root','','e-examsproject');
 
 
-$studentquery = mysqli_query($con,"SELECT * FROM students WHERE id = '".$_SESSION['id']."'");
-$studentData = mysqli_fetch_all($studentquery,MYSQLI_ASSOC);
+	$studentquery = mysqli_query($con,"SELECT * FROM students WHERE id = '".$_SESSION['id']."'");
+	$studentData = mysqli_fetch_all($studentquery,MYSQLI_ASSOC);
 
-$studentsub = mysqli_query($con,"SELECT * FROM student_subjects WHERE student_id='".$_SESSION['id']."' ");
-$studentsubjects = mysqli_fetch_all($studentsub,MYSQLI_ASSOC);
+	$studentsub = mysqli_query($con,"SELECT * FROM student_subjects WHERE student_id='".$_SESSION['id']."' ");
+	$studentsubjects = mysqli_fetch_all($studentsub,MYSQLI_ASSOC);
 
-//View all doctor to show in contact doctor page
-$view_all_doctor = mysqli_query($con,"SELECT * FROM professors ");
-$view_all_doctor_res = mysqli_fetch_all($view_all_doctor,MYSQLI_ASSOC);
+	//View all doctor to show in contact doctor page
+	$view_all_doctor = mysqli_query($con,"SELECT * FROM professors ");
+	$view_all_doctor_res = mysqli_fetch_all($view_all_doctor,MYSQLI_ASSOC);
+
 
 
 function ViewFloor($offic_id){
@@ -125,4 +126,13 @@ function if_answer_exist($question_id){
 		return false;
 	}
 
+}
+
+
+function GetUniversityName($id_tb,$tableName,$field){
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$getUniName = mysqli_query($con,"SELECT * FROM ".$tableName." WHERE id ='".$id_tb."' ");
+	$getUniName_res = mysqli_fetch_all($getUniName,MYSQLI_ASSOC);
+	return $getUniName_res[0]["$field"];
+	
 }

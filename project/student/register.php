@@ -1,5 +1,7 @@
 <?php include('C:\xampp1\htdocs\E Exams Project\php\student\register.php'); ?>
+<?php include('C:\xampp1\htdocs\E Exams Project\php\student\student-main-page.php'); ?>
 <?php include('C:\xampp1\htdocs\E Exams Project\php\dbcon.php'); ?>
+
 <?php  signup('stdname','stdpassword','stdemail','stduniversity','stdfacility','stdlevel','stddepartment' ,'std-register'); ?>
 <link rel="stylesheet" type="text/css" href="http://localhost/E%20Exams%20Project/style/css/student/register.css">
 
@@ -20,34 +22,28 @@
 		<input type="Password" name="stdpassword" class="inp1">
 
 		<label class="txt1">University</label>
-		<select name="stduniversity" class="sel1">
+		<select name="stduniversity" class="sel1" id="stduniversity">
+			<option option="">Select University</option>
 			<?php foreach($universities as $uni){ ?>
-			<option value="<?php echo $uni['id'] ?>"><?php echo $uni['id'] ?></option>
+			<option value="<?php echo $uni['id'] ?>"><?php  echo GetUniversityName($uni['id'],'universities','name'); ?></option>
 			<?php } ?>
 		</select>
 
 		<label class="txt1">Facility</label>
-		<select name="stdfacility" class="sel1">
-			<?php foreach($faculties as $fac){ ?>
-			<option value="<?php echo $fac['id'] ?>"><?php echo $fac['id']; ?></option>
-
-		<?php } ?>
+		<select name="stdfacility" class="sel1" id="stdfacility">
+			
 		</select>
 
 
 		<label class="txt1">Level</label>
-		<select name="stdlevel" class="sel1">
-			<?php foreach($levels as $lev){ ?>
-			<option value="<?php echo $lev['id'] ?>"><?php echo $lev['id'] ?></option>
-		<?php } ?>
+		<select name="stdlevel" class="sel1" id="stdlevel">
+			
 		</select>
 
 
 		<label class="txt1">Department</label>
-		<select name="stddepartment" class="sel1">
-			<?php foreach($departments as $dep){ ?>
-			<option value="<?php echo $dep['id'] ?>"><?php echo $dep['id']; ?></option>
-		<?php } ?>
+		<select name="stddepartment" class="sel1" id="stddepartment">
+			
 		</select>
 
 
@@ -60,3 +56,54 @@
 <?php include ('../../php/header.php'); ?>
 
 <?php include('../../php/footer.php'); ?>
+<script>
+	//Ftech facility with university
+	$(document).ready(function(){
+		$('#stduniversity').change(function(){
+			var stduni = $(this).val();
+			$.ajax({
+				url:"fetch/student-register-uni.php",
+				method:"POST",
+				data:{Stduni:stduni},
+				dataType:"text",
+				success:function(data){
+					$('#stdfacility').html(data);
+				}
+			});
+		});
+	});
+
+
+	//fetch level with facility
+	$(document).ready(function(){
+		$('#stdfacility').change(function(){
+			var stdfac = $(this).val();
+			$.ajax({
+				url:"fetch/student-register-fac.php",
+				method:"POST",
+				data:{Stdfac:stdfac},
+				dataType:"text",
+				success:function(data){
+					$('#stdlevel').html(data);
+				}
+			});
+		});
+	});
+
+	//fetch department with level
+	$(document).ready(function(){
+		$('#stdlevel').change(function(){
+			var stdlvl = $(this).val();
+			$.ajax({
+				url:"fetch/student-register-lvl.php",
+				method:"POST",
+				data:{Stdlvl:stdlvl},
+				dataType:"text",
+				success:function(data){
+					$('#stddepartment').html(data);
+				}
+			});
+		});
+	});
+
+</script>

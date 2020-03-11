@@ -118,11 +118,12 @@
 
                 <td>
                    <select name="EditSubId">
-                    <option>Select Subject</option>
-                    <?php foreach($view_subjects_res as $res){  ?>
-                       <option value="<?php echo $res['id'] ?>"><?php echo GetUniversityName($res['id'],'subjects','name'); ?></option>
-                   <?php } ?>
+                      <option>Select Subject</option>
+                      <?php foreach($view_subjects_res as $res){  ?>
+                         <option value="<?php echo $res['id'] ?>"><?php echo GetUniversityName($res['id'],'subjects','name'); ?></option>
+                     <?php } ?>
                    </select> 
+                   
                 </td>
 
                 <td>
@@ -149,6 +150,7 @@
                          <?php } ?>
                     </select>
                 </td>
+
                 <td>
                   <input type="text" name="EditSubHours">
                 </td>

@@ -14,17 +14,14 @@
 		$stdlevel =htmlspecialchars(mysqli_real_escape_string($con,$_POST["$stdlevel"]));
 		$stddepartment =htmlspecialchars(mysqli_real_escape_string($con,$_POST["$stddepartment"]));
 
-		$sql = "INSERT INTO `students`( `name`, `email`, `password`, `university`, `facility`, `level`, `department`) VALUES ('".$stdname."','".$stdemail."','".$stdpassword."',3,4,3,1)";
+		$sql = "INSERT INTO `students`( `name`, `email`, `password`, `university`, `facility`, `level`, `department`,`status`) VALUES ('".$stdname."','".$stdemail."','".$stdpassword."','".$stduniversity."','".$stdfacility."','".$stdlevel."','".$stddepartment."','3')";
 
 		$result = mysqli_query($con,$sql);
 		if($result){
-			//header('location:http://localhost/E%20Exams%20Project/project/student');
-			echo "<br><br><br><br><br>Done";
-		}else{
-			echo "<br><br><br><br><br>errrrrrrrrror";
+			header('location:http://localhost/E%20Exams%20Project');
+			
 		}
-		//header('location:http://localhost/E%20Exams%20Project/project/student/login.php');
-	
+		header('location:http://localhost/E%20Exams%20Project/project/student/register.php');
 	
 	}
 
