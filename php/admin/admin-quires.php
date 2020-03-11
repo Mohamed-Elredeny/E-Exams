@@ -18,3 +18,4 @@ $view_levels_res = mysqli_fetch_all($view_levels,MYSQLI_ASSOC);
 
 $view_proffessors =mysqli_query($con,"SELECT * FROM professors");
 $view_proffessors_res = mysqli_fetch_all($view_proffessors,MYSQLI_ASSOC);
+

@@ -145,3 +145,8 @@ function ChaptersSumInEachSub($id){
 
 }
 
+//Select Students Acoording To Status
+if(isset($_GET['Status'])){
+$view_real_students = mysqli_query($con,"SELECT * FROM students WHERE status='".$_GET['Status']."' ");
+$view_real_students_res =mysqli_fetch_all($view_real_students,MYSQLI_ASSOC);
+}

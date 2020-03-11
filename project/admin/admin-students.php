@@ -5,8 +5,8 @@
 
 
     <link rel='stylesheet' type='text/css' href='http://localhost/E%20Exams%20Project/style/css/admin/admin-main-page.css'>
-    
-    <link rel='stylesheet' type='text/css' href='http://localhost/E%20Exams%20Project/style/css/admin/admin-studentsPage.css'>
+
+    <link rel='stylesheet' type='text/css' href='http://localhost/E%20Exams%20Project/style/css/admin/admin-studnet.css'>
 
 
     <div class="main-admin-div-left">
@@ -23,10 +23,12 @@
 
     
     </div>
+
      <div class="main-admin-div-right">
        <form action="admin-students.php" method="POST">
-
         <center>
+<!-- Select Information to know students uni , fac , levl and dep -->
+<?php if(!isset($_POST['SelcetStds']) and !isset($_GET['Status'])){ ?>
         <table border="2">
             <tr>
                 <th>
@@ -78,34 +80,73 @@
                 </td>
             </tr>
         </table>
-           <br><br><br>
+<?php } ?>
+         
+<!-- after knowing your target fetch each kind of students -->
+<?php if(isset($_POST['SelcetStds']) and !isset($_GET['Status']) ){ ?>
         <table border="2px">
             <tr>
                 
-                <th>Pending Students</th>
+               
                 <th>Students</th>
+                <th>Pending Students</th>
                 <th>Rejected Students</th>
             </tr>
             <tr>
                 <td>
-                    <div class="View-student-list">
-                        <a href="">View</a>
-                    </div>
+                    
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=1">View</a>
+                    
                 </td>
                 <td>
-                    <div>
-                        <a href="">View</a>        
-                    </div>
+                   
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=3">View</a>        
+                    
                 </td>
                 <td>
-                    <div>
-                        <a href="">View</a>
-                    </div>
+                   
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=2">View</a>
+                   
                 </td>
             </tr>
         </table>
+<?php } ?>
 
-            
+<?php if(isset($_GET['Status'])) { ?>
+    <?php if($_GET['Status'] == '1'){ ?>
+        <table border="2px">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>University</th>
+                <th>Facility</th>
+                <th>Level</th>
+                <th>Department</th>
+             
+            </tr>
+            <?php foreach($view_real_students_res as $res){  ?>
+            <tr>
+                <td><?php echo $res['id'] ?></td>
+                <td><?php echo $res['name'] ?></td>
+                <td><?php echo $res['email'] ?></td>
+                <td><?php echo $res['password'] ?></td>
+                <td><?php echo GetUniversityName( $res['university'],'universities','name' ) ?></td>
+                <td><?php echo GetUniversityName( $res['facility'],'faculties','name' )  ?></td>
+                <td><?php echo GetUniversityName( $res['level'],'levels','name' )  ?></td>
+                <td><?php echo GetUniversityName( $res['department'],'departments','name' )  ?></td>
+            </tr>
+            <?php } ?>
+        </table>
+    <?php } elseif($_GET['Status'] == '2'){ ?>
+      <h1>2</h1> 
+    <?php } elseif($_GET['Status'] == '3'){ ?>
+       <h1>3</h1>
+
+    <?php }  ?>
+    <?php } ?>
+
 
            
         </center>
