@@ -184,6 +184,18 @@ if(isset($_POST['add-ch'])){
 	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Chapters.php');
 	
 }
+if(isset($_POST['accept'])){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$accepted_std =mysqli_query($con,"UPDATE students SET status='1' where id ='".$_POST['pend']."' ");
+	if($accepted_std){
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php');
+	}else{
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=3');
+	}
+	
+}
+
+
 
 //MODIFY unievrsities records
 function ModifyAnyTable($id,$tablename,$field,$table){
@@ -233,7 +245,7 @@ function ChaptersSumInEachSub($id){
 }
 
 
-
+//Get Students Data
 function GetStudentDet($uni_id,$fac_id,$lvl_id,$dep_id){
 
 	$con = mysqli_connect("localhost","root","","e-examsproject");
@@ -268,6 +280,17 @@ function GetStudentDet($uni_id,$fac_id,$lvl_id,$dep_id){
 		echo "</tr>";
 	}	
 }
+
+//Get pending students data
+function GetPendStdsData($uni_id,$fac_id,$lvl_id,$dep_id,$status){
+
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$Get_pend_Std_Det =mysqli_query($con,"SELECT * FROM students where university='".$uni_id."'and facility='".$fac_id."'and level='".$lvl_id."'and department='".$dep_id."' and status='".$status."' ");
+	$row = mysqli_fetch_all($Get_pend_Std_Det,MYSQLI_ASSOC);
+	
+	return $row;
+}
+
 
 function GetUniversityNameUsingFacId($fac_id){	
 	$con= mysqli_connect("localhost","root","","e-examsproject");

@@ -1,3 +1,10 @@
-.moka{
-	background: yellow;
+.pend-std{
+	display: inline-block;
+	height: 220px;
+	width: 200px;
+	padding: 10px;
+	background: red;
+	position: relative;
+	right: 35%;
+	top:20px;
 }

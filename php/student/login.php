@@ -9,7 +9,7 @@
 
 			}
 
-
+			session_start();
 
 			$sql = "SELECT * FROM students WHERE email='".$username."' AND password='".$password."' ";
 			$result = mysqli_query($con, $sql);

@@ -3,10 +3,9 @@
 
 
 
-
     <link rel='stylesheet' type='text/css' href='http://localhost/E%20Exams%20Project/style/css/admin/admin-main-page.css'>
 
-    <link rel='stylesheet' type='text/css' href='http://localhost/E%20Exams%20Project/style/css/admin/admin-studnet.css'>
+    <link rel='stylesheet' type='text/css' href='../../STYLE/css/admin/admin-studnet.css'>
 
 
     <div class="main-admin-div-left">
@@ -141,10 +140,24 @@
         </table>
           
     <?php } elseif($_GET['Status'] == '2'){ ?>
-      <h1>2</h1> 
+    
     <?php } elseif($_GET['Status'] == '3'){ ?>
-       <h1>3</h1>
-
+                <?php 
+                 session_start();
+                $x = GetPendStdsData($_SESSION["university"] ,$_SESSION["facility"] ,$_SESSION["level"] ,$_SESSION["department"],'3');
+                foreach($x as $r){ ?>
+                    <div class="pend-std">
+                        <h3> <?php echo $r['name'] ?></h3>
+                        <input type="submit" name="accept" value="Accept">
+                        <input type="submit" name="reject" value="Reject">
+                        <input type="hidden" name="pend" value="<?php echo $r['id'] ?>">
+                        <br>
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=3?id=<?php echo $r['id'] ?>">Details</a>
+                    </div>
+                    
+                
+                 
+                <?php } ?>
     <?php }  ?>
     <?php } ?>
 

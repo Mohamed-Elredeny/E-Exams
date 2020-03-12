@@ -30,3 +30,5 @@ $view_question_types_res = mysqli_fetch_all($view_question_types,MYSQLI_ASSOC);
 
 $view_question_types_diff = mysqli_query($con,"SELECT * FROM questions_difficulty");
 $view_question_types_diff_res = mysqli_fetch_all($view_question_types_diff,MYSQLI_ASSOC);
+
+
