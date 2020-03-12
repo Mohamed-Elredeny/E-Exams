@@ -76,6 +76,7 @@
                 <td colspan="4">
                     <center>
                       <input type="submit" name="SelcetStds" value="View Students Lists">
+                      
                     </center>
                 </td>
             </tr>
@@ -83,7 +84,7 @@
 <?php } ?>
          
 <!-- after knowing your target fetch each kind of students -->
-<?php if(isset($_POST['SelcetStds']) and !isset($_GET['Status']) ){ ?>
+<?php  if(isset($_POST['SelcetStds']) and !isset($_GET['Status']) ){ ?>
         <table border="2px">
             <tr>
                 
@@ -95,7 +96,7 @@
             <tr>
                 <td>
                     
-                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=1">View</a>
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=1"> View</a>
                     
                 </td>
                 <td>
@@ -108,6 +109,7 @@
                         <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=2">View</a>
                    
                 </td>
+              
             </tr>
         </table>
 <?php } ?>
@@ -126,19 +128,18 @@
                 <th>Department</th>
              
             </tr>
-            <?php foreach($view_real_students_res as $res){  ?>
             <tr>
-                <td><?php echo $res['id'] ?></td>
-                <td><?php echo $res['name'] ?></td>
-                <td><?php echo $res['email'] ?></td>
-                <td><?php echo $res['password'] ?></td>
-                <td><?php echo GetUniversityName( $res['university'],'universities','name' ) ?></td>
-                <td><?php echo GetUniversityName( $res['facility'],'faculties','name' )  ?></td>
-                <td><?php echo GetUniversityName( $res['level'],'levels','name' )  ?></td>
-                <td><?php echo GetUniversityName( $res['department'],'departments','name' )  ?></td>
+               <?php 
+               session_start();
+               GetStudentDet($_SESSION["university"] ,$_SESSION["facility"] ,$_SESSION["level"] ,$_SESSION["department"] );
+              ?>
+
+                
             </tr>
-            <?php } ?>
+        
+       
         </table>
+          
     <?php } elseif($_GET['Status'] == '2'){ ?>
       <h1>2</h1> 
     <?php } elseif($_GET['Status'] == '3'){ ?>

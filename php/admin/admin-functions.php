@@ -1,4 +1,5 @@
 <?php 
+
 //ADD New Records For Universities
 if(isset($_POST['addUni'])){ 
     $id = $_POST['UniId'];  
@@ -93,9 +94,95 @@ if(isset($_POST['EditSubDet'])){
 	$EditSubHours = $_POST['EditSubHours'];
 	$modSubDet = mysqli_query($con,"UPDATE subjects SET name='".$EditSubName."',department='".$EditSubDep."',doctor='".$EditSubDoc."',level='".$EditSubLevel."',hours='".$EditSubHours."' WHERE id='".$EditSubId."' ");
 		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Subjects.php');
+}
 
+if(isset($_POST['SelcetStds'])){
+	session_start();
+	$_SESSION["university"] = $_POST["SelStdUni"];
+	$_SESSION["facility"] = $_POST["SelStdFc"];
+	$_SESSION['level'] = $_POST["SelStdLevel"];
+	$_SESSION['department'] = $_POST["SelStdDep"];	
+}
+
+if(isset($_POST['mod-lvl'])){
+	$mod_lvl_id =$_POST['mod-lev-id'];
+	$mod_lvl_name = $_POST['mod-lev-name'];
+	$mod_lev_facility =$_POST['mod-lev-facility'];
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$mod_lvl_data = mysqli_query($con,"UPDATE levels SET name ='".$mod_lvl_name."', facility='".$mod_lev_facility."' WHERE id='".$mod_lvl_id."' ");
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Levels.php');
+
+}
+if(isset($_POST['add-lvl'])){
+	$add_lvl_name =$_POST['add-lvl-name'];
+	$add_lev_facility = $_POST['add-lev-facility'];
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$AddFacility = mysqli_query($con,"INSERT INTO levels (name,facility) VALUES('".$add_lvl_name."','".$add_lev_facility."') ");
+	if($AddFacility){
+		header('location:http://localhost/E%20Exams%20Project/');
+	}
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Levels.php');
+
+}
+
+//Delete lvl record
+if(isset($_GET['lvl_id'])){
+	DeleteAnyRecord('levels',$_GET['lvl_id']);
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Levels.php');
+}
+
+//Add New Dep
+if(isset($_POST['add-to-dep'])){
+	$add_dep_name =$_POST['add-dep-name'];
+	$add_dep_lvl=$_POST['add-dep-lvl'];
+	$con =mysqli_connect("localhost","root","","e-examsproject");
+	$add_to_dep = mysqli_query($con,"INSERT INTO departments (name,level) VALUES ('".$add_dep_name."','".$add_dep_lvl."') ");
+	if($add_to_dep){
+		header('location:http://localhost/E%20Exams%20Project/');
+	}
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Departments.php');
+}
+
+//Delete Dep
+if(isset($_GET['dep_id'])){
+	DeleteAnyRecord('departments',$_GET['dep_id']);
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Departments.php');
+}
+//Modify Department UsiNG iD
+if(isset($_POST['mod-dep'])){
+	$mod_dep_id =$_POST['mod-dep-id'];
+	$mod_dep_name=$_POST['mod-dep-name'];
+	$mod_dep_level=$_POST['mod-dep-level'];
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$mod_dep =mysqli_query($con,"UPDATE departments SET name='".$mod_dep_name."',level='".$mod_dep_level."' WHERE id='".$mod_dep_id."' ");
+	if($mod_dep){
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Departments.php');
+	}
+}
+
+//Modify Chapter
+if(isset($_POST['mod-ch'])){
+	$mod_ch_id = $_POST['mod-ch-id'];
+	$mod_ch_name = $_POST['mod-ch-name'];
+	$mod_ch_sub = $_POST['mod-ch-sub'];
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$mod_any_ch = mysqli_query($con,"UPDATE chapters SET name='".$mod_ch_name."' , subject_id='".$mod_ch_sub."' where id='".$mod_ch_id."' ");
+	if($mod_any_ch){
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Chapters.php');
+	}
+}
+
+//Add New Chapter
+if(isset($_POST['add-ch'])){
+	$add_ch_name = $_POST['add-ch-name'];
+	$add_ch_sub = $_POST['add-ch-sub'];
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$add_new_ch = mysqli_query($con,"INSERT INTO chapters (name,subject_id) VALUES ('".$add_ch_name."','".$add_ch_sub."') ");
+	if($add_new_ch){
+		header('location:http://localhost/E%20Exams%20Project/');
+	}
+	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Chapters.php');
 	
-
 }
 
 //MODIFY unievrsities records
@@ -145,8 +232,49 @@ function ChaptersSumInEachSub($id){
 
 }
 
-//Select Students Acoording To Status
-if(isset($_GET['Status'])){
-$view_real_students = mysqli_query($con,"SELECT * FROM students WHERE status='".$_GET['Status']."' ");
-$view_real_students_res =mysqli_fetch_all($view_real_students,MYSQLI_ASSOC);
+
+
+function GetStudentDet($uni_id,$fac_id,$lvl_id,$dep_id){
+
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$Get_Std_Det =mysqli_query($con,"SELECT * FROM students where university='".$uni_id."'and facility='".$fac_id."'and level='".$lvl_id."'and department='".$dep_id."' ");
+	$row = mysqli_fetch_all($Get_Std_Det,MYSQLI_ASSOC);
+	foreach($row as $r){
+		echo "<tr>";
+				echo "<td>";
+					echo $r['id'];
+				echo "</td>";
+				echo "<td>";
+					echo $r['name'];
+				echo "</td>";
+				echo "<td>";
+					echo $r['email'];
+				echo "</td>";
+				echo "<td>";
+					echo $r['password'];
+				echo "</td>";
+				echo "<td>";
+					echo GetUniversityName($r['university'],'universities','name');
+				echo "</td>";
+				echo "<td>";
+					echo GetUniversityName($r['facility'],'faculties','name');
+				echo "</td>";
+				echo "<td>";
+					echo GetUniversityName($r['level'],'levels','name');
+				echo "</td>";
+				echo "<td>";
+					echo GetUniversityName($r['department'],'departments','name');
+				echo "</td>";
+		echo "</tr>";
+	}	
 }
+
+function GetUniversityNameUsingFacId($fac_id){	
+	$con= mysqli_connect("localhost","root","","e-examsproject");
+	$Get_UniName =mysqli_query($con,"SELECT * FROM faculties where id='".$fac_id."' ");
+	$Get_UniName_res = mysqli_fetch_all($Get_UniName,MYSQLI_ASSOC);
+
+
+	return $Get_UniName_res[0]['university'];
+}
+
