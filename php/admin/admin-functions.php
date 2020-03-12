@@ -278,3 +278,22 @@ function GetUniversityNameUsingFacId($fac_id){
 	return $Get_UniName_res[0]['university'];
 }
 
+function Aajx_fun($post_id,$db_table_name,$select_with){
+	if(isset($_POST["$post_id"])){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$output='';
+	$select=mysqli_query($con,"SELECT * FROM ".$db_table_name." WHERE ".$select_with." ='".$_POST[$post_id]."' ");
+	$select_res = mysqli_fetch_all($select,MYSQLI_ASSOC);
+	$output ='<option value="">Select '.$db_table_name.'</option>';
+
+	foreach ($select_res as $se) {
+		$output .='<option value='.$se['id'].'>'.$se['name'].'</option>';
+	}
+	echo $output;
+	}else{
+		header('location:http://localhost/E%20Exams%20Project');
+	}
+}
+
+
+
