@@ -23,7 +23,7 @@
           <tr>
               <td>Department ID</td>
               <td>Department Name</td>
-              <td>Department Level</td>
+              <td> Level</td>
               <td>Level Facility</td>
               <td>Delete</td>
           </tr>

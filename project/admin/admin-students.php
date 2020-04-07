@@ -135,11 +135,29 @@
 
                 
             </tr>
+
+
         
        
         </table>
           
     <?php } elseif($_GET['Status'] == '2'){ ?>
+            <?php 
+                 session_start();
+                $x = GetPendStdsData($_SESSION["university"] ,$_SESSION["facility"] ,$_SESSION["level"] ,$_SESSION["department"],'2');
+                foreach($x as $r){ ?>
+                    <div class="pend-std">
+                        <h3> <?php echo $r['name'] ?></h3>
+                        <input type="submit" name="accept" value="Accept">
+                        <input type="submit" name="del_std" value="Delete">
+                        <input type="hidden" name="pend" value="<?php echo $r['id'] ?>">
+                        <br>
+                        <a href="http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=3?id=<?php echo $r['id'] ?>">Details</a>
+                    </div>
+                    
+                
+                 
+                <?php } ?>
     
     <?php } elseif($_GET['Status'] == '3'){ ?>
                 <?php 

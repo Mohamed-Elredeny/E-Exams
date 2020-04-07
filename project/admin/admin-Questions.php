@@ -69,14 +69,14 @@
                        <td>
                             <select name="sel_q_type" id="sel_q_type">
                               <?php foreach($view_question_types_res as $res){ ?>
-                                <option <?php echo $res['id']; ?>><?php echo $res['name'] ?></option>
+                                <option value="<?php echo $res['id']; ?>"><?php echo $res['name'] ?></option>
                               <?php } ?>
                             </select>
                         </td>
                        <td>
                             <select name="sel_q_diff" id="sel_q_diff"> 
                               <?php foreach($view_question_types_diff_res as $res){ ?>
-                                <option <?php echo $res['id'] ?>><?php echo $res['name'] ?></option>
+                                <option value="<?php echo $res['id'] ?>" ><?php echo $res['name'] ?></option>
                               <?php } ?>
                             </select>
                         </td>
@@ -91,16 +91,23 @@
                 </table>
 
         </center>
-               <h1>questions</h1>
-               <br><br>
-                 <input type="" name=""><br>
-                  answers 
-                  <select>
-                    <option> </option>
-                  </select>
-                  <br>
-                  <input type="" name="">
+
+        <!-- When we press select button -->
+
+       <?php
+       if(isset($_POST['sel_question'])){
+
+          Select_Specific_question($_POST['sel_q_type'],$_POST['sel_q_diff'],$_POST['sel_q_chapter'],$_POST['sel_q_sub']);
+          
+        }
+         ?>
+
+
+
+              
     </div>
+
+
 </form>
 
 
@@ -185,6 +192,22 @@
             });
             });
     });
- 
+     //Add Question
+       $(document).ready(function(){
+         $('#AddQuestion').click(function(){
+            var addQ = $(this).val();
+            $.ajax({
+                url:"fetch/questions/admin-questions/add.php",
+                method:"POST",
+                data:{AddQ:addQ},
+                dataType:"text",
+                success:function(data){
+                    $('#question').html(data);
+                }
+            });
+            });
+    });
+
+
 
 </script>

@@ -47,3 +47,14 @@
 
 
 }
+/*
+        Question Part in admin page
+*/
+.question{
+    margin-top: 20px;
+    display: block;
+    width: 900px;
+    position: relative;
+
+    background: red;
+}

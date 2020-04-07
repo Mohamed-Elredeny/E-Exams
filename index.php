@@ -1,5 +1,7 @@
 
 <?php include('C:\xampp1\htdocs\E Exams Project\php\header.php'); ?>
+
+
 <div class="welcome-mid-div">
 	<form action="index.php" method="POST">
 		<img src="style/img/download.png">

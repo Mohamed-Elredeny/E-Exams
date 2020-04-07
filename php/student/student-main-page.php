@@ -6,7 +6,7 @@ $con = mysqli_connect('localhost','root','','e-examsproject');
 	$studentquery = mysqli_query($con,"SELECT * FROM students WHERE id = '".$_SESSION['id']."'");
 	$studentData = mysqli_fetch_all($studentquery,MYSQLI_ASSOC);
 
-	$studentsub = mysqli_query($con,"SELECT * FROM student_subjects WHERE student_id='".$_SESSION['id']."' ");
+	@$studentsub = mysqli_query($con,"SELECT * FROM student_subjects WHERE student_id='".$_SESSION['id']."' ");
 	$studentsubjects = mysqli_fetch_all($studentsub,MYSQLI_ASSOC);
 
 	//View all doctor to show in contact doctor page

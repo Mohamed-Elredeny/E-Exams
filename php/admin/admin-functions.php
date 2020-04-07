@@ -1,5 +1,6 @@
 <?php 
 
+
 //ADD New Records For Universities
 if(isset($_POST['addUni'])){ 
     $id = $_POST['UniId'];  
@@ -103,6 +104,12 @@ if(isset($_POST['SelcetStds'])){
 	$_SESSION['level'] = $_POST["SelStdLevel"];
 	$_SESSION['department'] = $_POST["SelStdDep"];	
 }
+if(isset($_POST['SelcetDocs'])){
+    session_start();
+    $_SESSION["university"] = $_POST["SelStdUni"];
+    $_SESSION["facility"] = $_POST["SelStdFc"];
+
+}
 
 if(isset($_POST['mod-lvl'])){
 	$mod_lvl_id =$_POST['mod-lev-id'];
@@ -184,17 +191,71 @@ if(isset($_POST['add-ch'])){
 	header('location:http://localhost/E%20Exams%20Project/project/admin/admin-Chapters.php');
 	
 }
+// Accept Students
 if(isset($_POST['accept'])){
 	$con = mysqli_connect('localhost','root','','e-examsproject');
 	$accepted_std =mysqli_query($con,"UPDATE students SET status='1' where id ='".$_POST['pend']."' ");
 	if($accepted_std){
 		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php');
 	}else{
-		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=3');
-	}
-	
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=1');
+	}	
 }
 
+// Accept Doctors
+if(isset($_POST['acceptDoc'])){
+    $con = mysqli_connect('localhost','root','','e-examsproject');
+    $accepted_std =mysqli_query($con,"UPDATE professors SET status='1' where id ='".$_POST['pend']."' ");
+    if($accepted_std){
+        header('location:http://localhost/E%20Exams%20Project/project/admin/admin-doctors.php');
+    }else {
+        header('location:http://localhost/E%20Exams%20Project/project/admin/admin-doctors.php?Status=1');
+    }
+}
+// reject Students
+if(isset($_POST['reject'])){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$accepted_std =mysqli_query($con,"UPDATE students SET status='2' where id ='".$_POST['pend']."' ");
+	if($accepted_std){
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php');
+	}else{
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=2');
+	}	
+}
+// reject Doctors
+if(isset($_POST['rejectDoc'])){
+    $con = mysqli_connect('localhost','root','','e-examsproject');
+    $accepted_std =mysqli_query($con,"UPDATE professors SET status='2' where id ='".$_POST['pend']."' ");
+    if($accepted_std){
+        header('location:http://localhost/E%20Exams%20Project/project/admin/admin-doctors.php');
+    }else{
+        header('location:http://localhost/E%20Exams%20Project/project/admin/admin-doctors.php?Status=2');
+    }
+}
+//Delete Student
+if(isset($_POST['del_std'])){
+	DeleteAnyRecord('students',$_POST['pend']);
+		header('location:http://localhost/E%20Exams%20Project/project/admin/admin-students.php?Status=1');	
+
+}
+//Delete Student
+if(isset($_POST['del_doc'])){
+    DeleteAnyRecord('professors',$_POST['pend']);
+    header('location:http://localhost/E%20Exams%20Project/project/admin/admin-doctors.php?Status=1');
+
+}
+//Admin add new Student
+if(isset($_POST['newStd'])){
+	session_start();
+	$new_std_name = $_POST['newStdName'];
+	$new_std_email =$_POST['newStdEmail'];
+	$new_std_password = $_POST['newStdPassword'];
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$Add_new_student = mysqli_query($con,"INSERT INTO students ('name','email','password','university','facility','level','department','status') VALUES ('".$new_std_name."','".$new_std_email."','".$new_std_password."','".$_SESSION["university"] ."','".$_SESSION["facility"]."','".$_SESSION["level"]."','".$_SESSION["department"]."','1') ");
+	if(!$Add_new_student){
+		header('location:http://localhost/E%20Exams%20Project/');
+	}
+}
 
 
 //MODIFY unievrsities records
@@ -249,7 +310,7 @@ function ChaptersSumInEachSub($id){
 function GetStudentDet($uni_id,$fac_id,$lvl_id,$dep_id){
 
 	$con = mysqli_connect("localhost","root","","e-examsproject");
-	$Get_Std_Det =mysqli_query($con,"SELECT * FROM students where university='".$uni_id."'and facility='".$fac_id."'and level='".$lvl_id."'and department='".$dep_id."' ");
+	$Get_Std_Det =mysqli_query($con,"SELECT * FROM students where university='".$uni_id."'and facility='".$fac_id."'and level='".$lvl_id."'and department='".$dep_id."' and status='1' ");
 	$row = mysqli_fetch_all($Get_Std_Det,MYSQLI_ASSOC);
 	foreach($row as $r){
 		echo "<tr>";
@@ -281,6 +342,37 @@ function GetStudentDet($uni_id,$fac_id,$lvl_id,$dep_id){
 	}	
 }
 
+//Get Doctor Data
+function GetDoctorDet($uni_id,$fac_id,$lvl_id,$dep_id){
+
+    $con = mysqli_connect("localhost","root","","e-examsproject");
+    $Get_Std_Det =mysqli_query($con,"SELECT * FROM professors where university='".$uni_id."'and facility='".$fac_id."' and status='1' ");
+    $row = mysqli_fetch_all($Get_Std_Det,MYSQLI_ASSOC);
+    foreach($row as $r){
+        echo "<tr>";
+        echo "<td>";
+        echo $r['id'];
+        echo "</td>";
+        echo "<td>";
+        echo $r['name'];
+        echo "</td>";
+        echo "<td>";
+        echo $r['email'];
+        echo "</td>";
+        echo "<td>";
+        echo $r['password'];
+        echo "</td>";
+        echo "<td>";
+        echo GetUniversityName($r['university'],'universities','name');
+        echo "</td>";
+        echo "<td>";
+        echo GetUniversityName($r['facility'],'faculties','name');
+        echo "</td>";
+
+        echo "</tr>";
+    }
+}
+
 //Get pending students data
 function GetPendStdsData($uni_id,$fac_id,$lvl_id,$dep_id,$status){
 
@@ -291,7 +383,17 @@ function GetPendStdsData($uni_id,$fac_id,$lvl_id,$dep_id,$status){
 	return $row;
 }
 
+//Get pending Doctors data
+function GetPendDocsData($uni_id,$fac_id,$status)
+{
 
+    $con = mysqli_connect("localhost", "root", "", "e-examsproject");
+    $Get_pend_Std_Det = mysqli_query($con, "SELECT * FROM professors where university='" . $uni_id . "'and facility='" . $fac_id . "' and status='" . $status . "' ");
+    $row = mysqli_fetch_all($Get_pend_Std_Det, MYSQLI_ASSOC);
+
+    return $row;
+
+}
 function GetUniversityNameUsingFacId($fac_id){	
 	$con= mysqli_connect("localhost","root","","e-examsproject");
 	$Get_UniName =mysqli_query($con,"SELECT * FROM faculties where id='".$fac_id."' ");
@@ -319,4 +421,114 @@ function Aajx_fun($post_id,$db_table_name,$select_with){
 }
 
 
+function Select_Specific_question($question_type,$question_difficulty,$chapter_id,$subject_id){
+	$con = mysqli_connect("localhost","root","","e-examsproject");
+	$Select_Specific_question = mysqli_query($con,"SELECT * FROM question_content WHERE question_type='".$question_type."' and question_difficulty='".$question_difficulty."' and chapter_id='".$chapter_id."' and subject_id='".$subject_id."' ");
+	$Select_Specific_question_res = mysqli_fetch_all($Select_Specific_question,MYSQLI_ASSOC);
 
+	if(count($Select_Specific_question_res) > 0){
+		echo "
+		<center>
+		
+		<input type='button' name='AddQuestion' id='AddQuestion' value='AddQuestion'>
+		<input type='button' name='ViewQuestion' id='ViewQuestion' value='ViewQuestion'>
+	
+		</center>
+		";
+		
+
+		//if(isset($_POST['ViewQuestion'])){
+		//mcq
+			if($question_type == '3'){
+				$x=0;
+				foreach($Select_Specific_question_res as $res){
+						
+						
+
+					$x++;
+					echo "<div class='question' id='question'>";
+						
+						echo "<input style='width:800px;' type='text' value='". $x . " : ".$res['content']."' > <br>";
+						
+						
+						GetAllAnswers1($res['id']);
+
+					echo"</div>";
+				}
+			}
+		//}
+	}
+}
+	
+
+
+function GetAllAnswers1($real_question_id){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$view_each_question_results = mysqli_query($con,"SELECT * FROM wrong_answers where real_question_id='".$real_question_id."' ORDER BY RAND()");
+	$view_each_question_results_res = mysqli_fetch_all($view_each_question_results,MYSQLI_ASSOC);
+	$i=1;
+	if(if_answer_exist($real_question_id) == true){
+			foreach($view_each_question_results_res as $res){
+				if(GetTrueAnswer($real_question_id) == $res['Answer']){
+					echo $i."<input style='background:green;width:50px;' type='text' value='".$res['Answer']." '> <br>";
+				}else{
+					echo $i."<input style='width:50px;' type='text' value='".$res['Answer']." '> <br>";
+				}
+				
+				$i++;
+			}
+			echo "<br>
+				<input type='button' name='Modifyquestion' value='Modifyquestion'>
+				<input type='button' name='Deletequestion' value='Deletequestion'>
+				<br>
+				<br>
+			";
+	}else{
+		echo "Your question has no answers";
+	}
+}
+
+
+function GetAllAnswers($real_question_id){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$view_each_question_results = mysqli_query($con,"SELECT * FROM wrong_answers where real_question_id='".$real_question_id."' ORDER BY RAND()");
+	$view_each_question_results_res = mysqli_fetch_all($view_each_question_results,MYSQLI_ASSOC);
+	$i=1;
+	if(if_answer_exist($real_question_id) == true){
+			foreach($view_each_question_results_res as $res){
+				if(GetTrueAnswer($real_question_id) == $res['Answer']){
+					echo $i."<input style='background:green;width:50px;' type='text' value='".$res['Answer']." '> <br>";
+				}else{
+					echo $i."<input style='width:50px;' type='text' value='".$res['Answer']." '> <br>";
+				}
+				
+				$i++;
+			}
+			echo "<br>";
+	}else{
+		echo "Your question has no answers";
+	}
+}
+
+function if_answer_exist($question_id){
+
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$if_there_were_answers=mysqli_query($con,"SELECT * FROM wrong_answers where real_question_id='".$question_id."'");
+	$if_there_were_answers_res =mysqli_fetch_all($if_there_were_answers,MYSQLI_ASSOC);
+	if($if_there_were_answers_res > 0){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+function GetTrueAnswer($content){
+	$con = mysqli_connect('localhost','root','','e-examsproject');
+	$view_true_answer=mysqli_query($con,"SELECT * FROM question_answer where question_content ='".$content."'  ");
+	$view_true_answer_res = mysqli_fetch_all($view_true_answer,MYSQLI_ASSOC);
+	if(count($view_true_answer_res) >0){
+		return $view_true_answer_res[0]['right_answer'];
+	}
+	
+}
