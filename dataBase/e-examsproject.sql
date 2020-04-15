@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2020 at 01:40 AM
+-- Generation Time: Apr 15, 2020 at 05:06 AM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.3.9
 
@@ -64,7 +64,12 @@ INSERT INTO `chapters` (`id`, `name`, `subject_id`) VALUES
 (5, 'CH2', 8),
 (6, 'CH3', 8),
 (7, 'CH4', 8),
-(8, 'CH5', 8);
+(8, 'MOKA', 9),
+(9, 'omg', 4),
+(10, 'ch1', 30),
+(11, 'X', 31),
+(12, 'ch1', 32),
+(13, 'ch2', 32);
 
 -- --------------------------------------------------------
 
@@ -86,7 +91,13 @@ INSERT INTO `departments` (`id`, `name`, `level`) VALUES
 (1, 'se', 3),
 (2, 'it', 3),
 (3, 'cs', 3),
-(4, 'is', 3);
+(4, 'is', 3),
+(14, 'moka', 4),
+(15, 'newDep', 4),
+(16, 'NEW', 10),
+(17, 'd3bis', 11),
+(18, 'arabic', 13),
+(19, 'english', 13);
 
 -- --------------------------------------------------------
 
@@ -123,9 +134,10 @@ CREATE TABLE `faculties` (
 INSERT INTO `faculties` (`id`, `name`, `university`) VALUES
 (4, 'fci', 5),
 (36, 'medican', 5),
-(37, '', 5),
 (39, 'new', 6),
-(41, 'wow', 5);
+(41, 'wow', 5),
+(45, 'd3bis', 58),
+(48, 'education', 62);
 
 -- --------------------------------------------------------
 
@@ -168,7 +180,13 @@ CREATE TABLE `levels` (
 
 INSERT INTO `levels` (`id`, `name`, `facility`) VALUES
 (3, 'lvl3', 4),
-(4, 'lvl4', 4);
+(4, 'lvl4', 4),
+(8, 'lvl2', 4),
+(9, 'lvl1', 4),
+(10, 'test', 36),
+(11, 'd3bis', 45),
+(13, 'levelOne', 48),
+(14, 'levelTwo', 48);
 
 -- --------------------------------------------------------
 
@@ -219,6 +237,26 @@ INSERT INTO `offices` (`id`, `floor_id`, `office_num`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pending`
+--
+
+CREATE TABLE `pending` (
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pending`
+--
+
+INSERT INTO `pending` (`id`, `name`) VALUES
+(1, 'Accepted'),
+(2, 'Rejected'),
+(3, 'Pending');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `professors`
 --
 
@@ -231,16 +269,17 @@ CREATE TABLE `professors` (
   `facility` int(11) NOT NULL,
   `exist_from` float NOT NULL,
   `exist_to` float NOT NULL,
-  `Office_name` int(11) NOT NULL
+  `Office_name` int(11) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `professors`
 --
 
-INSERT INTO `professors` (`id`, `name`, `email`, `password`, `university`, `facility`, `exist_from`, `exist_to`, `Office_name`) VALUES
-(5, 'mohamed', 'mohamedelerdeny1@gmail.com', '123', 5, 4, 9, 11, 1),
-(6, 'ali', 'ali@yahoo.com', 'ali123', 5, 4, 11, 1, 1);
+INSERT INTO `professors` (`id`, `name`, `email`, `password`, `university`, `facility`, `exist_from`, `exist_to`, `Office_name`, `status`) VALUES
+(5, 'mohamed', 'mohamedelerdeny1@gmail.com', '123', 5, 4, 9, 11, 1, 1),
+(6, 'ali', 'ali@yahoo.com', 'ali123', 5, 4, 11, 1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -401,16 +440,20 @@ CREATE TABLE `students` (
   `facility` int(11) NOT NULL,
   `level` int(11) NOT NULL,
   `department` int(11) NOT NULL,
-  `gpa` float NOT NULL
+  `gpa` float NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`id`, `name`, `email`, `password`, `university`, `facility`, `level`, `department`, `gpa`) VALUES
-(35, 'mohamed', 'mohamedelerdeny1@gmail.com', '123', 5, 4, 3, 1, 3),
-(36, 'ali', 'ali@yahoo.com', '123', 10, 36, 4, 3, 3);
+INSERT INTO `students` (`id`, `name`, `email`, `password`, `university`, `facility`, `level`, `department`, `gpa`, `status`) VALUES
+(35, 'mohamed', 'mohamedelerdeny1@gmail.com', '123', 5, 4, 3, 1, 3, 1),
+(36, 'ali', 'ali@yahoo.com', '123', 10, 36, 4, 3, 3, 1),
+(51, 'rami', 'ramo@gmail.com', '123', 5, 36, 10, 16, 0, 3),
+(52, 'amr', 'amr@yahoo.com', '123', 62, 48, 13, 18, 0, 1),
+(53, 'ahmed', 'ahmed@yahoo.com', '123', 5, 4, 3, 1, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -431,7 +474,9 @@ CREATE TABLE `student_subjects` (
 INSERT INTO `student_subjects` (`id`, `student_id`, `subject_id`) VALUES
 (37, 35, 3),
 (39, 35, 4),
-(42, 36, 8);
+(42, 36, 8),
+(43, 53, 3),
+(44, 53, 4);
 
 -- --------------------------------------------------------
 
@@ -459,7 +504,10 @@ INSERT INTO `subjects` (`id`, `name`, `department`, `doctor`, `level`, `hours`) 
 (7, 'CSS', 2, 5, 4, 2),
 (8, 'JS', 3, 6, 4, 2),
 (9, 'AJAX', 3, 5, 4, 2),
-(10, 'nono', 3, 6, 3, 11);
+(10, 'Bootstrap', 4, 6, 4, 2),
+(30, 'moka', 3, 6, 3, 3),
+(31, 'MOKA1', 3, 5, 3, 2),
+(32, 'subject1', 18, 5, 13, 2);
 
 -- --------------------------------------------------------
 
@@ -480,7 +528,9 @@ INSERT INTO `universities` (`id`, `name`) VALUES
 (5, 'kfs'),
 (6, 'ali'),
 (7, 'ali'),
-(10, 'new');
+(10, 'new'),
+(58, 'moka'),
+(62, 'helwan');
 
 -- --------------------------------------------------------
 
@@ -510,7 +560,8 @@ INSERT INTO `wrong_answers` (`id`, `real_question_id`, `Answer`) VALUES
 (9, 4, 'answer1'),
 (10, 4, 'answer2'),
 (11, 4, 'answer3'),
-(12, 4, 'answer4');
+(12, 4, 'answer4'),
+(13, 5, 'test1');
 
 --
 -- Indexes for dumped tables
@@ -592,13 +643,20 @@ ALTER TABLE `offices`
   ADD KEY `floor_id` (`floor_id`);
 
 --
+-- Indexes for table `pending`
+--
+ALTER TABLE `pending`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `professors`
 --
 ALTER TABLE `professors`
   ADD PRIMARY KEY (`id`),
   ADD KEY `university` (`university`),
   ADD KEY `facility` (`facility`),
-  ADD KEY `Office_name` (`Office_name`);
+  ADD KEY `Office_name` (`Office_name`),
+  ADD KEY `status` (`status`);
 
 --
 -- Indexes for table `questions`
@@ -661,7 +719,8 @@ ALTER TABLE `students`
   ADD KEY `department` (`department`),
   ADD KEY `facility` (`facility`),
   ADD KEY `level` (`level`),
-  ADD KEY `students_ibfk_4` (`university`);
+  ADD KEY `students_ibfk_4` (`university`),
+  ADD KEY `status` (`status`);
 
 --
 -- Indexes for table `student_subjects`
@@ -707,13 +766,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `chapters`
 --
 ALTER TABLE `chapters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `exams`
@@ -725,7 +784,7 @@ ALTER TABLE `exams`
 -- AUTO_INCREMENT for table `faculties`
 --
 ALTER TABLE `faculties`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `floors`
@@ -737,7 +796,7 @@ ALTER TABLE `floors`
 -- AUTO_INCREMENT for table `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `numbers`
@@ -752,10 +811,16 @@ ALTER TABLE `offices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `pending`
+--
+ALTER TABLE `pending`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `professors`
 --
 ALTER TABLE `professors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `questions`
@@ -803,31 +868,31 @@ ALTER TABLE `specific_question_difficulty`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `student_subjects`
 --
 ALTER TABLE `student_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `subjects`
 --
 ALTER TABLE `subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `universities`
 --
 ALTER TABLE `universities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `wrong_answers`
 --
 ALTER TABLE `wrong_answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
@@ -905,7 +970,8 @@ ALTER TABLE `offices`
 ALTER TABLE `professors`
   ADD CONSTRAINT `professors_ibfk_1` FOREIGN KEY (`university`) REFERENCES `universities` (`id`),
   ADD CONSTRAINT `professors_ibfk_2` FOREIGN KEY (`facility`) REFERENCES `faculties` (`id`),
-  ADD CONSTRAINT `professors_ibfk_3` FOREIGN KEY (`Office_name`) REFERENCES `offices` (`id`);
+  ADD CONSTRAINT `professors_ibfk_3` FOREIGN KEY (`Office_name`) REFERENCES `offices` (`id`),
+  ADD CONSTRAINT `professors_ibfk_4` FOREIGN KEY (`status`) REFERENCES `pending` (`id`);
 
 --
 -- Constraints for table `questions_in_each_chapter`
@@ -950,7 +1016,8 @@ ALTER TABLE `students`
   ADD CONSTRAINT `students_ibfk_1` FOREIGN KEY (`department`) REFERENCES `departments` (`id`),
   ADD CONSTRAINT `students_ibfk_2` FOREIGN KEY (`facility`) REFERENCES `faculties` (`id`),
   ADD CONSTRAINT `students_ibfk_3` FOREIGN KEY (`level`) REFERENCES `levels` (`id`),
-  ADD CONSTRAINT `students_ibfk_4` FOREIGN KEY (`university`) REFERENCES `universities` (`id`);
+  ADD CONSTRAINT `students_ibfk_4` FOREIGN KEY (`university`) REFERENCES `universities` (`id`),
+  ADD CONSTRAINT `students_ibfk_5` FOREIGN KEY (`status`) REFERENCES `pending` (`id`);
 
 --
 -- Constraints for table `student_subjects`
